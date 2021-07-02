@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { SocketServiceService } from '../services/socket-service.service';
 import { map } from 'rxjs/operators';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-chat',
@@ -10,6 +11,7 @@ import { map } from 'rxjs/operators';
 })
 export class ChatComponent implements OnInit {
 
+    form: FormGroup;
     messages: any = [];
     messagesChat: Subject<any>;
 
@@ -24,13 +26,20 @@ export class ChatComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.form = new FormGroup({
+            text: new FormControl('')
+        })
         this.messagesChat.subscribe(data => {
             console.log(data);
         })
     }
 
     sendChatMessage() {
-        this.messagesChat.next({text: 'Hola desde el cliente'})
+        const data = {
+            userName: sessionStorage.getItem('userName'),
+            text: this.form.get('text').value
+        }
+        this.messagesChat.next(data)
     }
 
 }
