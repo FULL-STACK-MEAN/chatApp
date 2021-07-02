@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
 import { SocketServiceService } from '../services/socket-service.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-chat',
@@ -8,10 +10,27 @@ import { SocketServiceService } from '../services/socket-service.service';
 })
 export class ChatComponent implements OnInit {
 
-  constructor(private socketService: SocketServiceService) { }
+    messages: any = [];
+    messagesChat: Subject<any>;
 
-  ngOnInit(): void {
-      this.socketService.connect();
-  }
+
+    constructor(private socketService: SocketServiceService) { 
+                        this.messagesChat = <Subject<any>>socketService.connect()
+                                                            .pipe(
+                                                                map((res: any) => {
+                                                                    return res
+                                                                })
+                                                            )
+    }
+
+    ngOnInit(): void {
+        this.messagesChat.subscribe(data => {
+            console.log(data);
+        })
+    }
+
+    sendChatMessage() {
+        this.messagesChat.next({text: 'Hola desde el cliente'})
+    }
 
 }

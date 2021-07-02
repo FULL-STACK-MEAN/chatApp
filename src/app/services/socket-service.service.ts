@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { io } from 'socket.io-client';
 
 @Injectable({
@@ -16,7 +16,20 @@ export class SocketServiceService {
 
       this.socket = io(this.url, { transports: ['websocket'] });
 
-      return Subject.create()
+      let observer = {
+          next: (data: any) => {
+             this.socket.emit('messageChat', JSON.stringify(data))
+          }
+      }
+
+      let observable = new Observable(observer => {
+          this.socket.on('messageChat', (data: any) => {
+              observer.next(data);
+          })
+          return () => { this.socket.disconnect(); }
+      })
+
+      return Subject.create(observer, observable);
   }
 
 }
