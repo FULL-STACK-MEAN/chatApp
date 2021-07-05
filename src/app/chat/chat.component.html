@@ -1,9 +1,13 @@
 <div class="panel">
-    <div class="message">
+    <div class="message"
+         [ngClass]="{'self': message.userName === userName}"
+         *ngFor="let message of messages">
         <div class="content">
-            <img src="/assets/avatar-1.svg" alt="">
+            <img [src]="message.avatar" alt="">
             <span>
-                Hola
+                <span class="user-name">{{message.userName}}</span>
+                <br>
+                {{message.text}}
             </span>
         </div>
     </div>

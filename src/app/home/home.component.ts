@@ -62,6 +62,7 @@ export class HomeComponent implements OnInit {
         sessionStorage.setItem('userName', this.form.get('name').value);
         const data = {
             label: 'start',
+            avatar: this.avatar,
             name: this.form.get('name').value
         }
         this.messagesChat.next(data);

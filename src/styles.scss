@@ -84,20 +84,26 @@ body {
 .panel {
     height: 100vh;
     background-color: beige;
+    padding: 1rem;
 
     .message {
         width: 100%;
         display: flex;
-        justify-content: flex-end;
+        justify-content: flex-start;
+
+        &.self {
+            justify-content: flex-end;
+        }
 
         .content {
             margin: 1em;
-            font-size: 1.5em;
+            font-size: 1.3em;
             padding: 0.5em 1em;
             background-color: white;
             border: 1px solid tomato;
             border-radius: 0 0.5em 0.5em 0.5em;
             position: relative;
+            display: flex;
 
             &::before {
                 content: "";
@@ -127,6 +133,12 @@ body {
 
             img {
                 height: 80px;
+                margin-right: 0.5rem;
+            }
+
+            .user-name {
+                font-size: 0.8rem;
+                color: grey;
             }
         }
     }

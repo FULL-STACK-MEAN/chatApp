@@ -14,7 +14,8 @@ export class ChatComponent implements OnInit {
     form: FormGroup;
     messages: any = [];
     messagesChat: Subject<any>;
-
+    userName: string;
+    avatar: string;
 
     constructor(private socketService: SocketServiceService) { 
                         this.messagesChat = <Subject<any>>socketService.connect()
@@ -31,12 +32,24 @@ export class ChatComponent implements OnInit {
         })
         this.messagesChat.subscribe(data => {
             console.log(data);
+            const responseData = JSON.parse(data);
+            if(responseData.label === 'start') {
+                responseData.messagesChat.forEach((elem: any) => {
+                    this.messages.push(elem);
+                });
+            }
+            if(responseData.label === 'messageChat') {
+                this.messages.push(responseData.message);
+            }
         })
+        this.userName = sessionStorage.getItem('userName');
+        this.avatar = sessionStorage.getItem('avatar');
     }
 
     sendChatMessage() {
         const data = {
-            userName: sessionStorage.getItem('userName'),
+            userName: this.userName,
+            avatar: this.avatar,
             text: this.form.get('text').value
         }
         this.messagesChat.next(data)
