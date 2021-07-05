@@ -1,4 +1,16 @@
-<form [formGroup]="form">
-    <input type="text" formControlName="text">
-</form>
-<button (click)="sendChatMessage()">Enviar mensaje</button>
+<div class="panel">
+    <div class="message">
+        <div class="content">
+            <img src="/assets/avatar-1.svg" alt="">
+            <span>
+                Hola
+            </span>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <form [formGroup]="form">
+        <textarea formControlName="text"></textarea>
+    </form>
+    <button (click)="sendChatMessage()">+</button>
+</div>
