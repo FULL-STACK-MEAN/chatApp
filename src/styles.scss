@@ -1,1 +1,82 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.home {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .avatars {
+        display: flex;
+        margin-bottom: 1rem;
+
+        .avatar {
+            height: 140px;
+            width: 140px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 300ms ease-in-out;
+            cursor: pointer;
+
+            img {
+                height: 100px;
+            }
+
+            &.selected,
+            &:hover {
+                background-color: rgb(211, 211, 211);
+            }
+        }
+    }
+
+    form {
+        width: 440px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        input {
+            width: 100%;
+            padding: 0.3em 1em;
+            font-size: 2rem;
+            font-family: 'Poppins', sans-serif;
+            border: none;
+            border-bottom: 2px solid tomato;
+
+            &:focus {
+                outline: 0;
+            }
+        }
+
+        button {
+            padding: 0.5em 1em;
+            font-size: 1.5rem;
+            margin-top: 1rem;
+            font-family: 'Poppins', sans-serif;
+            border: none;
+            border-radius: 0.3em;
+            color: white;
+            background-color: tomato;
+            transition: 300ms all ease-in-out;
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgb(177, 70, 52);
+            }
+        }
+    }
+
+} 
