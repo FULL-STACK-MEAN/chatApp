@@ -1,4 +1,7 @@
-<div class="panel">
+<div class="header">
+
+</div>
+<div class="panel" #panel>
     <div class="message"
          [ngClass]="{'self': message.userName === userName}"
          *ngFor="let message of messages">
@@ -14,7 +17,7 @@
 </div>
 <div class="footer">
     <form [formGroup]="form">
-        <textarea formControlName="text"></textarea>
+        <textarea formControlName="text" maxlength="70"></textarea>
     </form>
     <button (click)="sendChatMessage()">+</button>
 </div>

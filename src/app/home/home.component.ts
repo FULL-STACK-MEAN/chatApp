@@ -1,9 +1,7 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { SocketServiceService } from '../services/socket-service.service';
-import { map } from 'rxjs/operators';
+import { ChatService } from '../services/chat.service';
 
 @Component({
   selector: 'app-home',
@@ -23,26 +21,15 @@ export class HomeComponent implements OnInit {
 
     @ViewChildren('avatar') avatarsRef: QueryList<ElementRef>;
     form: FormGroup;
-    messagesChat: Subject<any>;
     avatar: string;
 
 
     constructor(private router: Router,
-                private socketService: SocketServiceService) { 
-                        this.messagesChat = <Subject<any>>socketService.connect()
-                                                            .pipe(
-                                                                map((res: any) => {
-                                                                    return res
-                                                                })
-                                                            )
-                 }
+                private chatService: ChatService) { }
 
     ngOnInit(): void {
         this.form = new FormGroup({
             name: new FormControl('', [Validators.required, Validators.minLength(2)])
-        })
-        this.messagesChat.subscribe(data => {
-            console.log(data);
         })
     }
 
@@ -65,7 +52,7 @@ export class HomeComponent implements OnInit {
             avatar: this.avatar,
             name: this.form.get('name').value
         }
-        this.messagesChat.next(data);
+        this.chatService.sendChatMessage(data);
         this.router.navigate(['/chat'])
     }
 

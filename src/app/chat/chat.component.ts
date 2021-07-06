@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
-import { SocketServiceService } from '../services/socket-service.service';
-import { map } from 'rxjs/operators';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ChatService } from '../services/chat.service';
 
 @Component({
   selector: 'app-chat',
@@ -13,24 +11,17 @@ export class ChatComponent implements OnInit {
 
     form: FormGroup;
     messages: any = [];
-    messagesChat: Subject<any>;
     userName: string;
     avatar: string;
+    @ViewChild('panel') panelRef: ElementRef;
 
-    constructor(private socketService: SocketServiceService) { 
-                        this.messagesChat = <Subject<any>>socketService.connect()
-                                                            .pipe(
-                                                                map((res: any) => {
-                                                                    return res
-                                                                })
-                                                            )
-    }
+    constructor(private chatService: ChatService) {}
 
     ngOnInit(): void {
         this.form = new FormGroup({
             text: new FormControl('')
         })
-        this.messagesChat.subscribe(data => {
+        this.chatService.messagesChat.subscribe(data => {
             console.log(data);
             const responseData = JSON.parse(data);
             if(responseData.label === 'start') {
@@ -46,13 +37,18 @@ export class ChatComponent implements OnInit {
         this.avatar = sessionStorage.getItem('avatar');
     }
 
+    ngAfterViewChecked() {
+        this.panelRef.nativeElement.scrollTop = this.panelRef.nativeElement.scrollHeight;
+    }
+
     sendChatMessage() {
         const data = {
             userName: this.userName,
             avatar: this.avatar,
             text: this.form.get('text').value
         }
-        this.messagesChat.next(data)
+        this.chatService.sendChatMessage(data);
+        this.form.reset();
     }
 
 }
