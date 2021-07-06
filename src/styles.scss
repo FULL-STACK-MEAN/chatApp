@@ -84,6 +84,13 @@ body {
 .header {
     height: 4rem;
     background-color: tomato;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    p {
+        color: white;
+    }
 }
 
 .panel {

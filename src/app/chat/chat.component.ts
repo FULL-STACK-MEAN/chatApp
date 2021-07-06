@@ -11,7 +11,10 @@ export class ChatComponent implements OnInit {
 
     form: FormGroup;
     messages: any = [];
+    userId: string;
     userName: string;
+    userNameIn: string;
+    userNameOut: string;
     avatar: string;
     @ViewChild('panel') panelRef: ElementRef;
 
@@ -22,15 +25,30 @@ export class ChatComponent implements OnInit {
             text: new FormControl('')
         })
         this.chatService.messagesChat.subscribe(data => {
-            console.log(data);
             const responseData = JSON.parse(data);
             if(responseData.label === 'start') {
-                responseData.messagesChat.forEach((elem: any) => {
-                    this.messages.push(elem);
-                });
+                if(this.userId === undefined) {
+                    this.userId = responseData.userId;
+                    responseData.messagesChat.forEach((elem: any) => {
+                        this.messages.push(elem);
+                    });
+                } else {
+                    this.userNameIn = responseData.userNameIn;
+                    const timer = setTimeout(() => {
+                        this.userNameIn = undefined;
+                        clearTimeout(timer);
+                    }, 2000)
+                }
             }
             if(responseData.label === 'messageChat') {
                 this.messages.push(responseData.message);
+            }
+            if(responseData.label === 'end') {
+                this.userNameOut = responseData.userNameOut;
+                const timer = setTimeout(() => {
+                    this.userNameOut = undefined;
+                    clearTimeout(timer);
+                }, 2000)
             }
         })
         this.userName = sessionStorage.getItem('userName');

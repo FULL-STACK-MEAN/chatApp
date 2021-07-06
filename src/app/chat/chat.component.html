@@ -1,5 +1,6 @@
 <div class="header">
-
+    <p *ngIf="userNameIn">{{userNameIn}} se ha unido</p>
+    <p *ngIf="userNameOut">{{userNameOut}} se ha marchado</p>
 </div>
 <div class="panel" #panel>
     <div class="message"
